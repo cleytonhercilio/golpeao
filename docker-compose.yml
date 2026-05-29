@@ -1,0 +1,33 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - db_data:/app/data_db
+    environment:
+      - DATABASE_URL=sqlite:////app/data_db/golpeao.db
+      - SECRET_KEY=${SECRET_KEY:-golpeao-secret-key-copa-2026-troque-em-prod}
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=1440
+      - ADMIN_SECRET=${ADMIN_SECRET:-admin-secret-golpeao}
+      - ENVIRONMENT=${ENVIRONMENT:-production}
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - API_BASE_URL=http://backend:8000
+      - SECRET_KEY=${SECRET_KEY:-golpeao-secret-key-copa-2026-troque-em-prod}
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  db_data:
