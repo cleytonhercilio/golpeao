@@ -1,0 +1,115 @@
+/* GolPeão — CSS Gamificado Copa 2026 */
+:root {
+    --copa-green: #0A5C36;
+    --copa-gold: #FFD700;
+    --copa-dark: #020F2A;
+    --copa-red: #FF2A00;
+    --copa-white: #FFFFFF;
+}
+
+.stApp {
+    background: linear-gradient(135deg, var(--copa-dark) 0%, #0D1B2A 100%);
+    color: var(--copa-white);
+}
+
+.stSidebar {
+    background: rgba(10, 92, 54, 0.15) !important;
+    border-right: 1px solid rgba(255,215,0,0.2);
+}
+
+.match-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,215,0,0.2);
+    border-radius: 16px;
+    padding: 20px;
+    margin: 10px 0;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.match-card:hover {
+    border-color: var(--copa-gold);
+    box-shadow: 0 0 20px rgba(255,215,0,0.3);
+    transform: translateY(-2px);
+}
+
+.flag-img {
+    width: 64px;
+    height: 48px;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.team-name {
+    font-size: 1.0em;
+    font-weight: bold;
+    margin-top: 6px;
+    text-align: center;
+}
+
+.score-display {
+    font-size: 2em;
+    font-weight: 900;
+    color: var(--copa-gold);
+    text-align: center;
+    font-family: monospace;
+}
+
+.rank-1 { color: var(--copa-gold); font-size: 1.4em; font-weight: 900; }
+.rank-2 { color: #C0C0C0; font-size: 1.2em; font-weight: bold; }
+.rank-3 { color: #CD7F32; font-size: 1.1em; font-weight: bold; }
+
+.badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: bold; margin: 2px; }
+.badge-unlocked { background: linear-gradient(135deg, var(--copa-gold), #FF8C00); color: var(--copa-dark); }
+.badge-locked { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.1); }
+
+.tier-badge { padding: 3px 10px; border-radius: 12px; font-size: 0.8em; font-weight: bold; display: inline-block; }
+.tier-bronze   { background: linear-gradient(135deg, #CD7F32, #8B4513); color: white; }
+.tier-prata    { background: linear-gradient(135deg, #C0C0C0, #808080); color: white; }
+.tier-ouro     { background: linear-gradient(135deg, #FFD700, #FF8C00); color: #020F2A; }
+.tier-platina  { background: linear-gradient(135deg, #E5E4E2, #BCC0C4); color: #020F2A; }
+.tier-lenda    { background: linear-gradient(135deg, #FF6B35, #FF2A00); color: white; }
+
+.activity-item {
+    padding: 8px 12px;
+    border-left: 3px solid var(--copa-gold);
+    margin: 6px 0;
+    background: rgba(255,215,0,0.05);
+    border-radius: 0 8px 8px 0;
+    font-size: 0.9em;
+}
+
+.invite-code {
+    font-family: monospace;
+    font-size: 2em;
+    font-weight: 900;
+    color: var(--copa-gold);
+    letter-spacing: 8px;
+    text-align: center;
+    padding: 10px;
+    border: 2px dashed rgba(255,215,0,0.5);
+    border-radius: 12px;
+}
+
+.stButton > button {
+    background: linear-gradient(135deg, var(--copa-green), #0D7A4A) !important;
+    color: white !important;
+    border: 2px solid var(--copa-gold) !important;
+    border-radius: 12px !important;
+    font-weight: bold !important;
+    transition: all 0.3s !important;
+}
+
+.stButton > button:hover {
+    box-shadow: 0 0 15px rgba(255,215,0,0.5) !important;
+    transform: translateY(-1px) !important;
+}
+
+.stTextInput input, .stNumberInput input {
+    background: rgba(255,255,255,0.08) !important;
+    border: 1px solid rgba(255,215,0,0.3) !important;
+    color: white !important;
+    border-radius: 8px !important;
+}
+
+h1, h2, h3 { color: var(--copa-gold) !important; }
