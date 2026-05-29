@@ -1,7 +1,7 @@
 """
 GolPeão — Seed de Dados: Copa do Mundo FIFA 2026
 48 Seleções | 12 Grupos | 104 Jogos
-Fonte: FIFA Official + NBC Sports / USA Today (dezembro 2025)
+Fonte: Sorteio FIFA — 5 de dezembro de 2024, Washington D.C.
 
 Horários em UTC. Brasília = UTC-3.
 """
@@ -12,81 +12,80 @@ from datetime import datetime, timezone
 # TIMES — 48 Seleções com código ISO-2 para flagcdn.com
 # ============================================================
 # Formato: (id, name_pt, name_en, iso_code, group, confederation)
-# iso_code = código de 2 letras ISO 3166-1 alpha-2
-# Para times "a confirmar" (playoffs): iso_code = "xx"
+# Grupos confirmados no sorteio de 5/dez/2024
 
 TEAMS = [
-    # ── GRUPO A ──────────────────────────────────────────────
-    (1,  "México",         "Mexico",         "mx", "A", "CONCACAF"),
-    (2,  "Coreia do Sul",  "South Korea",    "kr", "A", "AFC"),
-    (3,  "África do Sul",  "South Africa",   "za", "A", "CAF"),
-    (4,  "Playoff UEFA D", "UEFA Playoff D", "xx", "A", "UEFA"),
+    # ── GRUPO A — Sede: México ────────────────────────────────
+    (1,  "México",              "Mexico",               "mx",     "A", "CONCACAF"),
+    (2,  "Coreia do Sul",       "South Korea",          "kr",     "A", "AFC"),
+    (3,  "África do Sul",       "South Africa",         "za",     "A", "CAF"),
+    (4,  "República Tcheca",    "Czech Republic",       "cz",     "A", "UEFA"),
 
-    # ── GRUPO B ──────────────────────────────────────────────
-    (5,  "Canadá",         "Canada",         "ca", "B", "CONCACAF"),
-    (6,  "Qatar",          "Qatar",          "qa", "B", "AFC"),
-    (7,  "Suíça",          "Switzerland",    "ch", "B", "UEFA"),
-    (8,  "Playoff UEFA A", "UEFA Playoff A", "xx", "B", "UEFA"),
+    # ── GRUPO B — Sede: Canadá ────────────────────────────────
+    (5,  "Canadá",              "Canada",               "ca",     "B", "CONCACAF"),
+    (6,  "Qatar",               "Qatar",                "qa",     "B", "AFC"),
+    (7,  "Suíça",               "Switzerland",          "ch",     "B", "UEFA"),
+    (8,  "Bósnia e Herzegovina","Bosnia and Herzegovina","ba",    "B", "UEFA"),
 
-    # ── GRUPO C ──────────────────────────────────────────────
-    (9,  "Alemanha",       "Germany",        "de", "C", "UEFA"),
-    (10, "Escócia",        "Scotland",       "gb-sct", "C", "UEFA"),
-    (11, "Chile",          "Chile",          "cl", "C", "CONMEBOL"),
-    (12, "Playoff AFC/OFC","AFC/OFC PO",     "xx", "C", "AFC"),
+    # ── GRUPO C — Sede: EUA ───────────────────────────────────
+    (9,  "Brasil",              "Brazil",               "br",     "C", "CONMEBOL"),
+    (10, "Marrocos",            "Morocco",              "ma",     "C", "CAF"),
+    (11, "Haiti",               "Haiti",                "ht",     "C", "CONCACAF"),
+    (12, "Escócia",             "Scotland",             "gb-sct", "C", "UEFA"),
 
-    # ── GRUPO D ──────────────────────────────────────────────
-    (13, "EUA",            "United States",  "us", "D", "CONCACAF"),
-    (14, "Paraguai",       "Paraguay",       "py", "D", "CONMEBOL"),
-    (15, "Austrália",      "Australia",      "au", "D", "AFC"),
-    (16, "Playoff UEFA C", "UEFA Playoff C", "xx", "D", "UEFA"),
+    # ── GRUPO D — Sede: EUA ───────────────────────────────────
+    (13, "Estados Unidos",      "United States",        "us",     "D", "CONCACAF"),
+    (14, "Paraguai",            "Paraguay",             "py",     "D", "CONMEBOL"),
+    (15, "Austrália",           "Australia",            "au",     "D", "AFC"),
+    (16, "Turquia",             "Turkey",               "tr",     "D", "UEFA"),
 
-    # ── GRUPO E ──────────────────────────────────────────────
-    (17, "Alemanha",       "Germany",        "de", "E", "UEFA"),   # ⚠️ confirmar grupo
-    (18, "Curaçao",        "Curaçao",        "cw", "E", "CONCACAF"),
-    (19, "Costa do Marfim","Ivory Coast",    "ci", "E", "CAF"),
-    (20, "Equador",        "Ecuador",        "ec", "E", "CONMEBOL"),
+    # ── GRUPO E — Sede: EUA ───────────────────────────────────
+    (17, "Alemanha",            "Germany",              "de",     "E", "UEFA"),
+    (18, "Curaçao",             "Curaçao",              "cw",     "E", "CONCACAF"),
+    (19, "Costa do Marfim",     "Ivory Coast",          "ci",     "E", "CAF"),
+    (20, "Equador",             "Ecuador",              "ec",     "E", "CONMEBOL"),
 
-    # ── GRUPO F ──────────────────────────────────────────────
-    (21, "Holanda",        "Netherlands",    "nl", "F", "UEFA"),
-    (22, "Japão",          "Japan",          "jp", "F", "AFC"),
-    (23, "Playoff UEFA B", "UEFA Playoff B", "xx", "F", "UEFA"),
-    (24, "Tunísia",        "Tunisia",        "tn", "F", "CAF"),
+    # ── GRUPO F — Sede: EUA/Canadá ────────────────────────────
+    (21, "Holanda",             "Netherlands",          "nl",     "F", "UEFA"),
+    (22, "Japão",               "Japan",                "jp",     "F", "AFC"),
+    (23, "Suécia",              "Sweden",               "se",     "F", "UEFA"),
+    (24, "Tunísia",             "Tunisia",              "tn",     "F", "CAF"),
 
-    # ── GRUPO G ──────────────────────────────────────────────
-    (25, "Bélgica",        "Belgium",        "be", "G", "UEFA"),
-    (26, "Egito",          "Egypt",          "eg", "G", "CAF"),
-    (27, "Irã",            "Iran",           "ir", "G", "AFC"),
-    (28, "Nova Zelândia",  "New Zealand",    "nz", "G", "OFC"),
+    # ── GRUPO G — Sede: EUA ───────────────────────────────────
+    (25, "Bélgica",             "Belgium",              "be",     "G", "UEFA"),
+    (26, "Egito",               "Egypt",                "eg",     "G", "CAF"),
+    (27, "Irã",                 "Iran",                 "ir",     "G", "AFC"),
+    (28, "Nova Zelândia",       "New Zealand",          "nz",     "G", "OFC"),
 
-    # ── GRUPO H ──────────────────────────────────────────────
-    (29, "Espanha",        "Spain",          "es", "H", "UEFA"),
-    (30, "Cabo Verde",     "Cape Verde",     "cv", "H", "CAF"),
-    (31, "Arábia Saudita", "Saudi Arabia",   "sa", "H", "AFC"),
-    (32, "Uruguai",        "Uruguay",        "uy", "H", "CONMEBOL"),
+    # ── GRUPO H — Sede: EUA/México ────────────────────────────
+    (29, "Espanha",             "Spain",                "es",     "H", "UEFA"),
+    (30, "Cabo Verde",          "Cape Verde",           "cv",     "H", "CAF"),
+    (31, "Arábia Saudita",      "Saudi Arabia",         "sa",     "H", "AFC"),
+    (32, "Uruguai",             "Uruguay",              "uy",     "H", "CONMEBOL"),
 
-    # ── GRUPO I ──────────────────────────────────────────────
-    (33, "França",         "France",         "fr", "I", "UEFA"),
-    (34, "Senegal",        "Senegal",        "sn", "I", "CAF"),
-    (35, "Noruega",        "Norway",         "no", "I", "UEFA"),
-    (36, "Playoff FIFA 2", "FIFA Playoff 2", "xx", "I", "CONMEBOL/AFC"),
+    # ── GRUPO I — Sede: EUA/Canadá ────────────────────────────
+    (33, "França",              "France",               "fr",     "I", "UEFA"),
+    (34, "Senegal",             "Senegal",              "sn",     "I", "CAF"),
+    (35, "Noruega",             "Norway",               "no",     "I", "UEFA"),
+    (36, "Iraque",              "Iraq",                 "iq",     "I", "AFC"),
 
-    # ── GRUPO J ──────────────────────────────────────────────
-    (37, "Argentina",      "Argentina",      "ar", "J", "CONMEBOL"),
-    (38, "Argélia",        "Algeria",        "dz", "J", "CAF"),
-    (39, "Áustria",        "Austria",        "at", "J", "UEFA"),
-    (40, "Jordânia",       "Jordan",         "jo", "J", "AFC"),
+    # ── GRUPO J — Sede: EUA ───────────────────────────────────
+    (37, "Argentina",           "Argentina",            "ar",     "J", "CONMEBOL"),
+    (38, "Argélia",             "Algeria",              "dz",     "J", "CAF"),
+    (39, "Áustria",             "Austria",              "at",     "J", "UEFA"),
+    (40, "Jordânia",            "Jordan",               "jo",     "J", "AFC"),
 
-    # ── GRUPO K ──────────────────────────────────────────────
-    (41, "Portugal",       "Portugal",       "pt", "K", "UEFA"),
-    (42, "Marrocos",       "Morocco",        "ma", "K", "CAF"),
-    (43, "Brasil",         "Brazil",         "br", "K", "CONMEBOL"),   # ⚠️ confirmar grupo
-    (44, "Playoff CONCACAF","CONCACAF PO",   "xx", "K", "CONCACAF"),
+    # ── GRUPO K — Sede: EUA/México ────────────────────────────
+    (41, "Portugal",            "Portugal",             "pt",     "K", "UEFA"),
+    (42, "Rep. Dem. do Congo",  "DR Congo",             "cd",     "K", "CAF"),
+    (43, "Uzbequistão",         "Uzbekistan",           "uz",     "K", "AFC"),
+    (44, "Colômbia",            "Colombia",             "co",     "K", "CONMEBOL"),
 
-    # ── GRUPO L ──────────────────────────────────────────────
-    (45, "Inglaterra",     "England",        "gb-eng", "L", "UEFA"),
-    (46, "Croácia",        "Croatia",        "hr", "L", "UEFA"),
-    (47, "Sérvia",         "Serbia",         "rs", "L", "UEFA"),
-    (48, "Playoff FIFA 1", "FIFA Playoff 1", "xx", "L", "UEFA/CONMEBOL"),
+    # ── GRUPO L — Sede: EUA/Canadá ────────────────────────────
+    (45, "Inglaterra",          "England",              "gb-eng", "L", "UEFA"),
+    (46, "Croácia",             "Croatia",              "hr",     "L", "UEFA"),
+    (47, "Gana",                "Ghana",                "gh",     "L", "CAF"),
+    (48, "Panamá",              "Panama",               "pa",     "L", "CONCACAF"),
 ]
 
 # ============================================================

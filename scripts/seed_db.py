@@ -51,8 +51,14 @@ def run_seed(reset: bool = False):
         team_map = {}
         for t in TEAMS:
             tid, name_pt, name_en, iso_code, group, confederation = t
-            existing = db.query(Team).filter(Team.name == name_pt, Team.group_name == group).first()
+            existing = db.query(Team).filter(
+                Team.iso_code == iso_code, Team.group_name == group
+            ).first()
             if existing:
+                existing.name = name_pt
+                existing.name_en = name_en
+                existing.flag_url = f"https://flagcdn.com/64x48/{iso_code}.png"
+                existing.confederation = confederation
                 team_map[tid] = existing
                 continue
             team = Team(
