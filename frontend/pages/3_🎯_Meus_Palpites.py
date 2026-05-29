@@ -59,17 +59,41 @@ for m in matches:
             else:
                 st.warning("Palpites fechados — sem palpite registrado.")
         else:
-            col1, col2, col3 = st.columns([2, 1, 2])
-            with col1:
-                st.markdown(f'<div style="text-align:center"><img src="https://flagcdn.com/64x48/{home_iso}.png" class="flag-img"><br><b>{home_name}</b></div>', unsafe_allow_html=True)
-            with col2:
-                h_val = existing["home_score"] if existing else 0
-                a_val = existing["away_score"] if existing else 0
-                h = st.number_input("Casa", 0, 20, h_val, key=f"h_{m['id']}_{sel_group_id}")
-                st.markdown("<div style='text-align:center;font-size:1.5em;font-weight:bold'>×</div>", unsafe_allow_html=True)
-                a = st.number_input("Fora", 0, 20, a_val, key=f"a_{m['id']}_{sel_group_id}")
-            with col3:
-                st.markdown(f'<div style="text-align:center"><img src="https://flagcdn.com/64x48/{away_iso}.png" class="flag-img"><br><b>{away_name}</b></div>', unsafe_allow_html=True)
+            h_val = existing["home_score"] if existing else 0
+            a_val = existing["away_score"] if existing else 0
+            c1, c2, c3, c4, c5 = st.columns([3, 2, 1, 2, 3])
+            with c1:
+                st.markdown(
+                    f'<div style="text-align:center">'
+                    f'<img src="https://flagcdn.com/64x48/{home_iso}.png" class="flag-img">'
+                    f'<br><b>{home_name}</b></div>',
+                    unsafe_allow_html=True,
+                )
+            with c2:
+                h = st.number_input(
+                    home_name, 0, 20, h_val,
+                    key=f"h_{m['id']}_{sel_group_id}",
+                    label_visibility="collapsed",
+                )
+            with c3:
+                st.markdown(
+                    "<div style='text-align:center;font-size:1.8em;"
+                    "font-weight:900;padding-top:4px'>×</div>",
+                    unsafe_allow_html=True,
+                )
+            with c4:
+                a = st.number_input(
+                    away_name, 0, 20, a_val,
+                    key=f"a_{m['id']}_{sel_group_id}",
+                    label_visibility="collapsed",
+                )
+            with c5:
+                st.markdown(
+                    f'<div style="text-align:center">'
+                    f'<img src="https://flagcdn.com/64x48/{away_iso}.png" class="flag-img">'
+                    f'<br><b>{away_name}</b></div>',
+                    unsafe_allow_html=True,
+                )
 
             if existing:
                 if st.button("✏️ Atualizar Palpite", key=f"upd_{m['id']}_{sel_group_id}"):
