@@ -4,6 +4,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import streamlit as st
 from frontend.api_client import login, register, me
+from frontend.components.music_player import render_music_player
 
 st.set_page_config(
     page_title="GolPeão ⚽",
@@ -86,6 +87,8 @@ def _render_sidebar():
             st.session_state.active_group = None
             st.rerun()
 
+
+render_music_player()
 
 if not st.session_state.token:
     _render_login()
