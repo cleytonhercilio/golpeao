@@ -88,12 +88,11 @@ def _render_sidebar():
             st.rerun()
 
 
-render_music_player()
-
 if not st.session_state.token:
     _render_login()
 else:
     _render_sidebar()
+    render_music_player()
     st.markdown("<h2>🏠 Bem-vindo ao GolPeão!</h2>", unsafe_allow_html=True)
     user = st.session_state.user
     if user:
