@@ -6,7 +6,7 @@ from app.dependencies import get_db, get_current_user
 from app.models.user import User
 from app.models.group import BolaoGroup, GroupMember
 from app.models.prediction import Prediction
-from app.schemas.ranking import RankingOut, RankingEntry
+from app.schemas.ranking import RankingOut, RankingEntry, GroupStats
 
 router = APIRouter(prefix="/ranking", tags=["ranking"])
 
@@ -53,3 +53,41 @@ def get_ranking(
         e.position = i + 1
 
     return RankingOut(group_id=group_id, group_name=group.name, entries=entries)
+
+
+@router.get("/{group_id}/stats", response_model=GroupStats)
+def get_group_stats(
+    group_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    group = db.query(BolaoGroup).filter(BolaoGroup.id == group_id).first()
+    if not group:
+        raise HTTPException(404, "Bolão não encontrado")
+
+    members = db.query(GroupMember).filter(GroupMember.group_id == group_id).all()
+    all_preds = db.query(Prediction).filter(Prediction.bolao_group_id == group_id).all()
+
+    top_scorer = None
+    top_pts = 0
+    for m in members:
+        user = db.query(User).filter(User.id == m.user_id).first()
+        if not user:
+            continue
+        pts = sum(p.points_earned for p in all_preds if p.user_id == m.user_id)
+        if pts > top_pts:
+            top_pts = pts
+            top_scorer = user.display_name
+
+    avg = sum(p.points_earned for p in all_preds) / len(members) if members else 0.0
+
+    return GroupStats(
+        group_id=group_id,
+        group_name=group.name,
+        total_members=len(members),
+        total_predictions=len(all_preds),
+        total_exact_scores=sum(1 for p in all_preds if p.is_exact),
+        top_scorer=top_scorer,
+        top_scorer_points=top_pts,
+        average_points=round(avg, 1),
+    )

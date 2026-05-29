@@ -26,13 +26,15 @@ def upcoming_matches(db: Session = Depends(get_db)):
 def list_matches(
     stage: Optional[str] = None,
     group: Optional[str] = None,
+    group_name: Optional[str] = None,
     db: Session = Depends(get_db),
 ):
     query = db.query(Match)
     if stage:
         query = query.filter(Match.stage == stage)
-    if group:
-        query = query.filter(Match.group_name == group)
+    grp = group or group_name
+    if grp:
+        query = query.filter(Match.group_name == grp)
     return query.order_by(Match.scheduled_at).all()
 
 
