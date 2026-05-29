@@ -24,17 +24,17 @@ _MUSIC_HTML = """<!DOCTYPE html>
 </style>
 </head>
 <body>
-<div id="btn" onclick="toggle()">
+<div id="btn" onclick="toggleMute()">
   <span id="icon">🎵</span>
   <span id="label">SOM</span>
 </div>
 <script>
 (function () {
-  /* ─── parâmetros ─────────────────────────────── */
+  /* ─── parâmetros ─────────────────────────── */
   var BPM  = 148;
-  var TICK = 60 / BPM / 4;   /* semicolcheia em segundos */
+  var TICK = 60 / BPM / 4;
 
-  /* ─── tabela de frequências ─────────────────── */
+  /* ─── notas ──────────────────────────────── */
   var N = {
     '_':0,
     'C3':130.81,'D3':146.83,'E3':164.81,'F3':174.61,'G3':196.00,'A3':220.00,
@@ -43,8 +43,7 @@ _MUSIC_HTML = """<!DOCTYPE html>
     'C6':1046.50
   };
 
-  /* ─── partitura — estilo FIFA PS1 ───────────── */
-  /* melodia principal (lá menor, 8 compassos) */
+  /* ─── partitura (FIFA PS1 style — lá menor) ── */
   var MEL = [
     ['E5',2],['_',1],['A5',1],['G5',2],['E5',2],
     ['A5',2],['C6',2],['B5',2],['A5',2],
@@ -55,7 +54,6 @@ _MUSIC_HTML = """<!DOCTYPE html>
     ['F5',2],['E5',2],['D5',2],['C5',2],
     ['A4',4],['_',4]
   ];
-  /* harmonia */
   var HAR = [
     ['C5',2],['_',1],['E5',1],['_',4],
     ['F5',2],['A5',2],['_',4],
@@ -66,7 +64,6 @@ _MUSIC_HTML = """<!DOCTYPE html>
     ['D5',2],['C5',2],['B4',2],['A4',2],
     ['E4',4],['_',4]
   ];
-  /* baixo */
   var BAS = [
     ['A3',4],['A3',4],['A3',4],['A3',4],
     ['F3',4],['F3',4],['F3',4],['F3',4],
@@ -74,67 +71,92 @@ _MUSIC_HTML = """<!DOCTYPE html>
     ['D3',4],['D3',4],['A3',4],['A3',4]
   ];
 
-  /* duração total do loop */
-  var LOOP = MEL.reduce(function(s,n){return s+n[1];},0) * TICK;
+  var LOOP = MEL.reduce(function(s,n){return s+n[1];},0)*TICK;
 
-  /* ─── estado ─────────────────────────────────── */
-  var ac = null, master = null, muted = false, playing = false;
+  /* ─── estado ─────────────────────────────── */
+  var ac=null, master=null, muted=false, playing=false;
 
-  /* ─── agenda uma nota ────────────────────────── */
+  /* ─── agenda nota ────────────────────────── */
   function note(hz, t, dur, type, vol) {
     if (!hz) return;
-    var o = ac.createOscillator(), g = ac.createGain();
+    var o=ac.createOscillator(), g=ac.createGain();
     o.connect(g); g.connect(master);
-    o.type = type;
+    o.type=type;
     o.frequency.setValueAtTime(hz, t);
     g.gain.setValueAtTime(vol, t);
-    g.gain.exponentialRampToValueAtTime(0.00001, t + dur * 0.87);
-    o.start(t); o.stop(t + dur + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.00001, t+dur*0.87);
+    o.start(t); o.stop(t+dur+0.01);
   }
 
-  /* ─── agenda loop completo ───────────────────── */
+  /* ─── agenda loop ────────────────────────── */
   function scheduleLoop(start) {
     if (!playing) return;
-    var t = start;
-    MEL.forEach(function(n){ var d=n[1]*TICK; note(N[n[0]],t,d,'square',0.13); t+=d; });
-    t = start;
-    HAR.forEach(function(n){ var d=n[1]*TICK; note(N[n[0]],t,d,'square',0.06); t+=d; });
-    t = start;
-    BAS.forEach(function(n){ var d=n[1]*TICK; note(N[n[0]],t,d,'triangle',0.07); t+=d; });
-    var delay = Math.max(0,(start+LOOP-ac.currentTime-0.3))*1000;
-    setTimeout(function(){ scheduleLoop(start+LOOP); }, delay);
+    var t=start;
+    MEL.forEach(function(n){var d=n[1]*TICK; note(N[n[0]],t,d,'square',0.13); t+=d;});
+    t=start;
+    HAR.forEach(function(n){var d=n[1]*TICK; note(N[n[0]],t,d,'square',0.06); t+=d;});
+    t=start;
+    BAS.forEach(function(n){var d=n[1]*TICK; note(N[n[0]],t,d,'triangle',0.07); t+=d;});
+    var delay=Math.max(0,(start+LOOP-ac.currentTime-0.3))*1000;
+    setTimeout(function(){scheduleLoop(start+LOOP);},delay);
   }
 
-  /* ─── inicia áudio ───────────────────────────── */
-  function start() {
-    if (!ac) {
-      var AC = window.AudioContext || window.webkitAudioContext;
-      if (!AC) return;
-      ac = new AC();
-      master = ac.createGain();
-      master.gain.setValueAtTime(0.8, ac.currentTime);
-      master.connect(ac.destination);
-    }
-    if (ac.state === 'suspended') ac.resume();
-    if (!playing) { playing = true; scheduleLoop(ac.currentTime + 0.1); }
+  /* ─── começa a tocar ─────────────────────── */
+  function startPlaying() {
+    ac.resume().then(function() {
+      if (!playing) {
+        playing = true;
+        scheduleLoop(ac.currentTime + 0.1);
+      }
+      updateBtn();
+    });
   }
 
-  /* ─── atualiza botão ─────────────────────────── */
+  /* ─── atualiza botão ─────────────────────── */
   function updateBtn() {
     document.getElementById('icon').textContent  = muted ? '🔇' : '🎵';
     document.getElementById('label').textContent = muted ? 'MUDO' : 'SOM';
   }
 
-  /* ─── toggle (chamado pelo botão) ────────────── */
-  window.toggle = function () {
+  /* ─── mute/unmute (botão) ────────────────── */
+  window.toggleMute = function() {
     if (!playing) {
-      start(); muted = false;
-    } else {
-      muted = !muted;
-      master.gain.setTargetAtTime(muted ? 0 : 0.8, ac.currentTime, 0.08);
+      /* primeira interação veio pelo botão */
+      muted = false;
+      startPlaying();
+      return;
     }
+    muted = !muted;
+    master.gain.setTargetAtTime(muted?0:0.8, ac.currentTime, 0.08);
     updateBtn();
   };
+
+  /* ─── inicializa AudioContext na carga ───── */
+  var AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return;
+  ac = new AC();
+  master = ac.createGain();
+  master.gain.setValueAtTime(0.8, ac.currentTime);
+  master.connect(ac.destination);
+
+  if (ac.state === 'running') {
+    /* browser permite autoplay — toca imediatamente */
+    playing = true;
+    scheduleLoop(ac.currentTime + 0.1);
+    updateBtn();
+  } else {
+    /* browser bloqueou — aguarda qualquer interação na página */
+    var doc = (window.parent && window.parent.document) || document;
+    function onFirstInteraction() {
+      doc.removeEventListener('click',    onFirstInteraction, true);
+      doc.removeEventListener('keydown',  onFirstInteraction, true);
+      doc.removeEventListener('touchstart',onFirstInteraction, true);
+      startPlaying();
+    }
+    doc.addEventListener('click',     onFirstInteraction, true);
+    doc.addEventListener('keydown',   onFirstInteraction, true);
+    doc.addEventListener('touchstart',onFirstInteraction, true);
+  }
 })();
 </script>
 </body>
