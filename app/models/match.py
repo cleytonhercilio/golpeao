@@ -8,7 +8,7 @@ from app.database import Base
 class Team(Base):
     __tablename__ = "teams"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     name_en: Mapped[str] = mapped_column(String(100), nullable=False)
     iso_code: Mapped[str] = mapped_column(String(10), nullable=False)
@@ -20,7 +20,7 @@ class Team(Base):
 class Match(Base):
     __tablename__ = "matches"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
     match_number: Mapped[int] = mapped_column(Integer, unique=True, nullable=False)
     home_team_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey("teams.id"), nullable=True)
     away_team_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey("teams.id"), nullable=True)
