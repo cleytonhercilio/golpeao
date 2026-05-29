@@ -27,6 +27,17 @@ if stage == "group":
     if gf != "Todos":
         group_filter = gf
 
+
+def _flag(iso, name):
+    return (
+        f'<img src="https://flagcdn.com/w80/{iso}.png"'
+        f' onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"'
+        f' style="width:52px;height:36px;border-radius:8px;border:2px solid rgba(255,255,255,0.25);object-fit:cover;box-shadow:0 2px 6px rgba(0,0,0,0.4);"'
+        f' alt="{name}">'
+        f'<span style="display:none;width:52px;height:36px;border-radius:8px;background:#2C5F8A;align-items:center;justify-content:center;font-size:22px;">🌍</span>'
+    )
+
+
 matches = get_matches(stage=stage, group=group_filter)
 if not matches:
     st.info("Nenhum jogo encontrado.")
@@ -39,29 +50,40 @@ else:
         home_name = home.get("name", "A definir")
         away_name = away.get("name", "A definir")
         sched = m.get("scheduled_at", "")[:16].replace("T", " ")
+        group_name = m.get("group_name", "")
+        stage_val = m.get("stage", stage)
+        group_label = f"Grupo {group_name}" if group_name else stage_val.upper()
+        venue_short = (m.get("venue") or "")[:30] + ("..." if len(m.get("venue") or "") > 30 else "")
 
         if m.get("is_played"):
-            mid_html = f'<div class="score-display">{m["home_score"]} × {m["away_score"]}</div>'
+            badge = '<span class="badge-done">Encerrado</span>'
+            center_html = f'<div class="score-display">{m["home_score"]} × {m["away_score"]}</div>'
         elif m.get("is_locked"):
-            mid_html = '<div style="text-align:center;color:#FF6B35;font-size:1.2em">🔒 Fechado</div>'
+            badge = '<span class="badge-lock">🔒 Fechado</span>'
+            center_html = '<div class="score-display" style="opacity:.35">? × ?</div>'
         else:
-            mid_html = '<div style="text-align:center;color:#7FFF00">🟢 Aberto</div>'
+            badge = '<span class="badge-open">Aberto</span>'
+            center_html = '<div class="score-display" style="opacity:.35">? × ?</div>'
 
-        label = m.get("match_label") or f"{home_name} vs {away_name}"
         st.markdown(f"""
         <div class="match-card">
-            <div style="font-size:0.72em;color:rgba(255,255,255,0.4);margin-bottom:8px">
-                Jogo #{m['match_number']} | {sched} UTC | {m.get('venue','')[:40]}
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <span style="font-size:11px;font-weight:800;color:#A0C8FF;text-transform:uppercase;letter-spacing:1px;">
+                    Jogo #{m['match_number']} · {sched} UTC · {venue_short}
+                </span>
+                {badge}
             </div>
-            <div style="display:flex;align-items:center;justify-content:space-around">
-                <div style="text-align:center;width:35%">
-                    <img src="https://flagcdn.com/64x48/{home_iso}.png" class="flag-img" onerror="this.style.display='none'"><br>
-                    <span class="team-name">{home_name}</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;">
+                    {_flag(home_iso, home_name)}
+                    <span style="font-size:13px;font-weight:900;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.5);text-align:center;">{home_name}</span>
                 </div>
-                <div style="width:30%">{mid_html}</div>
-                <div style="text-align:center;width:35%">
-                    <img src="https://flagcdn.com/64x48/{away_iso}.png" class="flag-img" onerror="this.style.display='none'"><br>
-                    <span class="team-name">{away_name}</span>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:86px;">
+                    {center_html}
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;">
+                    {_flag(away_iso, away_name)}
+                    <span style="font-size:13px;font-weight:900;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.5);text-align:center;">{away_name}</span>
                 </div>
             </div>
         </div>

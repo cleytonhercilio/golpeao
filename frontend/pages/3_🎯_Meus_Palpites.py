@@ -35,6 +35,8 @@ pred_map = {p["match_id"]: p for p in my_preds}
 
 st.markdown("---")
 
+_FLAG_STYLE = "width:52px;height:36px;border-radius:8px;border:2px solid rgba(255,255,255,0.25);object-fit:cover;box-shadow:0 2px 6px rgba(0,0,0,0.4);"
+
 for m in matches:
     home = m.get("home_team") or {}
     away = m.get("away_team") or {}
@@ -65,7 +67,9 @@ for m in matches:
             with c1:
                 st.markdown(
                     f'<div style="text-align:center">'
-                    f'<img src="https://flagcdn.com/64x48/{home_iso}.png" class="flag-img">'
+                    f'<img src="https://flagcdn.com/w80/{home_iso}.png"'
+                    f' onerror="this.style.display=\'none\'"'
+                    f' style="{_FLAG_STYLE}">'
                     f'<br><b>{home_name}</b></div>',
                     unsafe_allow_html=True,
                 )
@@ -90,7 +94,9 @@ for m in matches:
             with c5:
                 st.markdown(
                     f'<div style="text-align:center">'
-                    f'<img src="https://flagcdn.com/64x48/{away_iso}.png" class="flag-img">'
+                    f'<img src="https://flagcdn.com/w80/{away_iso}.png"'
+                    f' onerror="this.style.display=\'none\'"'
+                    f' style="{_FLAG_STYLE}">'
                     f'<br><b>{away_name}</b></div>',
                     unsafe_allow_html=True,
                 )

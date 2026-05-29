@@ -28,6 +28,20 @@ ALL_ACHIEVEMENTS = [
     {"slug": "100pts",          "name": "Centenário",      "icon": "💯", "description": "Atingiu 100 pontos no bolão",               "bonus": 20},
 ]
 
+
+def show_achievement_popup(achievement_name: str, achievement_icon: str, points_bonus: int):
+    st.markdown(f"""
+    <div class="ach-popup">
+        <div class="ach-icon">{achievement_icon}</div>
+        <div style="flex:1;">
+            <div style="font-size:11px;font-weight:800;color:#FFD700;text-transform:uppercase;letter-spacing:1px;">Conquista desbloqueada!</div>
+            <div style="font-family:'Fredoka One',cursive;font-size:15px;color:#fff;">{achievement_name}</div>
+        </div>
+        <div style="font-family:'Fredoka One',cursive;font-size:18px;color:#FFD700;">+{points_bonus}</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+
 user = st.session_state.user or {}
 total_pts = user.get("total_points", 0)
 
@@ -40,6 +54,20 @@ if total_pts >= 100:
 
 st.markdown(f"### {user.get('avatar_emoji','⚽')} {user.get('display_name','Jogador')} — {total_pts} pts")
 st.caption("Badges em ouro = desbloqueados. Cinza = ainda não conquistados.")
+
+# Show popups for newly unlocked achievements (tracked per session)
+if "shown_ach_popups" not in st.session_state:
+    st.session_state.shown_ach_popups = set()
+
+newly_unlocked = unlocked_slugs - st.session_state.shown_ach_popups
+if newly_unlocked:
+    ach_map = {a["slug"]: a for a in ALL_ACHIEVEMENTS}
+    for slug in newly_unlocked:
+        if slug in ach_map:
+            ach = ach_map[slug]
+            show_achievement_popup(ach["name"], ach["icon"], ach["bonus"])
+    st.session_state.shown_ach_popups |= newly_unlocked
+
 st.markdown("---")
 
 cols = st.columns(3)
@@ -54,6 +82,6 @@ for i, ach in enumerate(ALL_ACHIEVEMENTS):
             <div style="font-size:2.5em">{ach['icon']}</div>
             <div class="badge {badge_class}" style="margin:8px 0">{lock}{ach['name']}</div>
             <div style="font-size:0.78em;color:rgba(255,255,255,{'0.7' if unlocked else '0.3'})">{ach['description']}</div>
-            {"<div style='font-size:0.72em;color:var(--copa-gold);margin-top:4px'>" + bonus_text + "</div>" if bonus_text else ""}
+            {"<div style='font-size:0.72em;color:#FFD700;margin-top:4px'>" + bonus_text + "</div>" if bonus_text else ""}
         </div>
         """, unsafe_allow_html=True)

@@ -88,6 +88,30 @@ def _render_sidebar():
             st.rerun()
 
 
+def _render_hud(user):
+    pts = user.get("total_points", 0)
+    tier_map = {
+        "bronze": "🥉 Bronze", "silver": "🥈 Prata", "gold": "🥇 Ouro",
+        "platinum": "💎 Platina", "legend": "👑 Lenda",
+    }
+    tier_label = tier_map.get(user.get("tier", "bronze"), "🥉 Bronze")
+    st.markdown(f"""
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+        <div class="hud-pill hud-gold">
+            <span style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#FFD700,#FF8C00);border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#7A3800;">★</span>
+            <span style="font-family:'Fredoka One',cursive;font-size:16px;color:#FFD700;">{pts} pts</span>
+        </div>
+        <div class="hud-pill hud-gold" style="border-color:rgba(255,215,0,0.4);">
+            <span style="font-size:14px;">{tier_label}</span>
+        </div>
+        <div class="hud-pill hud-red" style="margin-left:auto;">
+            <span style="font-size:14px;">{user.get('avatar_emoji', '⚽')}</span>
+            <span style="font-family:'Fredoka One',cursive;font-size:14px;color:#fff;">{user.get('display_name', '')}</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+
 render_music_player()
 
 if not st.session_state.token:
@@ -97,6 +121,7 @@ else:
     st.markdown("<h2>🏠 Bem-vindo ao GolPeão!</h2>", unsafe_allow_html=True)
     user = st.session_state.user
     if user:
+        _render_hud(user)
         st.markdown(
             f"Olá, **{user['display_name']}**! Use o menu lateral para navegar entre as páginas.",
             unsafe_allow_html=True,

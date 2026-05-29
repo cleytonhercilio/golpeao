@@ -1,115 +1,246 @@
-/* GolPeão — CSS Gamificado Copa 2026 */
-:root {
-    --copa-green: #0A5C36;
-    --copa-gold: #FFD700;
-    --copa-dark: #020F2A;
-    --copa-red: #FF2A00;
-    --copa-white: #FFFFFF;
-}
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&display=swap');
 
+/* ── Background principal ── */
 .stApp {
-    background: linear-gradient(135deg, var(--copa-dark) 0%, #0D1B2A 100%);
-    color: var(--copa-white);
+    background: linear-gradient(180deg,
+        #5B9BD5 0%, #87CEEB 35%,
+        #5CC85A 35%, #4AAD48 100%
+    ) !important;
+    min-height: 100vh;
 }
 
-.stSidebar {
-    background: rgba(10, 92, 54, 0.15) !important;
-    border-right: 1px solid rgba(255,215,0,0.2);
+/* ── Sidebar ── */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #0D2540, #1A3A5C) !important;
+    border-right: 2px solid rgba(255, 215, 0, 0.3) !important;
 }
 
+[data-testid="stSidebar"] * {
+    color: #fff !important;
+}
+
+[data-testid="stSidebarNav"] a {
+    border-radius: 12px !important;
+    margin: 2px 8px !important;
+    font-family: 'Nunito', sans-serif !important;
+    font-weight: 800 !important;
+}
+
+[data-testid="stSidebarNav"] a:hover {
+    background: rgba(255, 215, 0, 0.15) !important;
+}
+
+/* ── Títulos e textos ── */
+h1, h2, h3 {
+    font-family: 'Fredoka One', cursive !important;
+    color: #fff !important;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.5) !important;
+}
+
+p, li, span, label {
+    color: rgba(255,255,255,0.9) !important;
+    font-family: 'Nunito', sans-serif !important;
+    font-weight: 700 !important;
+}
+
+/* ── Botões principais ── */
+.stButton > button {
+    background: linear-gradient(180deg, #FFD700, #E6A800) !important;
+    border: none !important;
+    border-radius: 14px !important;
+    padding: 10px 20px !important;
+    font-family: 'Fredoka One', cursive !important;
+    font-size: 16px !important;
+    color: #3A1A00 !important;
+    box-shadow: 0 4px 0 #A07000, 0 6px 10px rgba(0,0,0,0.3) !important;
+    transition: transform 0.1s, box-shadow 0.1s !important;
+    width: 100% !important;
+}
+
+.stButton > button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 0 #A07000, 0 8px 16px rgba(0,0,0,0.4) !important;
+}
+
+.stButton > button:active {
+    transform: translateY(3px) !important;
+    box-shadow: 0 1px 0 #A07000 !important;
+}
+
+/* ── Inputs de número (placar) ── */
+[data-testid="stNumberInput"] input {
+    background: rgba(255,255,255,0.1) !important;
+    border: 2px solid #FFD700 !important;
+    border-radius: 8px !important;
+    color: #FFD700 !important;
+    font-size: 20px !important;
+    font-family: 'Fredoka One', cursive !important;
+    text-align: center !important;
+}
+
+/* ── Inputs de texto ── */
+[data-testid="stTextInput"] input {
+    background: rgba(255,255,255,0.1) !important;
+    border: 2px solid rgba(255,215,0,0.4) !important;
+    border-radius: 12px !important;
+    color: #fff !important;
+    font-family: 'Nunito', sans-serif !important;
+    font-weight: 800 !important;
+}
+
+[data-testid="stTextInput"] input:focus {
+    border-color: #FFD700 !important;
+    box-shadow: 0 0 0 2px rgba(255,215,0,0.3) !important;
+}
+
+/* ── Selectbox ── */
+[data-testid="stSelectbox"] > div > div {
+    background: rgba(26,58,92,0.9) !important;
+    border: 2px solid rgba(255,215,0,0.4) !important;
+    border-radius: 12px !important;
+    color: #fff !important;
+}
+
+/* ── Métricas ── */
+[data-testid="stMetric"] {
+    background: linear-gradient(135deg, #1A4A7C, #234870) !important;
+    border: 2px solid rgba(255,215,0,0.3) !important;
+    border-radius: 16px !important;
+    padding: 12px 16px !important;
+    box-shadow: 0 3px 0 #0A2040 !important;
+}
+
+[data-testid="stMetricValue"] {
+    font-family: 'Fredoka One', cursive !important;
+    color: #FFD700 !important;
+    font-size: 28px !important;
+}
+
+[data-testid="stMetricLabel"] {
+    color: rgba(255,255,255,0.6) !important;
+    font-family: 'Nunito', sans-serif !important;
+    font-weight: 800 !important;
+}
+
+/* ── Tabs ── */
+[data-testid="stTabs"] [role="tab"] {
+    background: rgba(0,0,0,0.25) !important;
+    border: 2px solid rgba(255,255,255,0.1) !important;
+    border-radius: 999px !important;
+    color: rgba(255,255,255,0.5) !important;
+    font-family: 'Fredoka One', cursive !important;
+    font-size: 14px !important;
+    margin: 0 4px !important;
+    padding: 6px 16px !important;
+}
+
+[data-testid="stTabs"] [role="tab"][aria-selected="true"] {
+    background: linear-gradient(135deg, #FFD700, #FF8C00) !important;
+    border-color: #FFD700 !important;
+    color: #3A1A00 !important;
+}
+
+/* ── Tabelas / Dataframes ── */
+[data-testid="stDataFrame"] {
+    border: 2px solid rgba(255,215,0,0.3) !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+}
+
+/* ── Cards de container genérico ── */
+[data-testid="stVerticalBlock"] > div > div {
+    border-radius: 16px !important;
+}
+
+/* ── Animações globais ── */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes slideInDown {
+    from { transform: translateY(-20px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+@keyframes bounceIn {
+    0%   { transform: scale(0.3); opacity: 0; }
+    50%  { transform: scale(1.05); }
+    70%  { transform: scale(0.9); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* ── Classes de jogo reutilizáveis ── */
 .match-card {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,215,0,0.2);
-    border-radius: 16px;
-    padding: 20px;
-    margin: 10px 0;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
+    background: linear-gradient(135deg, #1A4A7C, #234870);
+    border: 3px solid #FFD700;
+    border-radius: 18px;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 0 #0A2040, 0 6px 16px rgba(0,0,0,0.4);
 }
 
-.match-card:hover {
-    border-color: var(--copa-gold);
-    box-shadow: 0 0 20px rgba(255,215,0,0.3);
-    transform: translateY(-2px);
+.gp-flag {
+    width: 52px; height: 36px;
+    border-radius: 8px;
+    border: 2px solid rgba(255,255,255,0.25);
+    object-fit: cover;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
 }
 
-.flag-img {
-    width: 64px;
-    height: 48px;
-    border-radius: 6px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-}
+.badge          { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: bold; margin: 2px; }
+.badge-unlocked { background: linear-gradient(135deg, #FFD700, #FF8C00); color: #020F2A; }
+.badge-locked   { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.1); }
 
-.team-name {
-    font-size: 1.0em;
-    font-weight: bold;
-    margin-top: 6px;
-    text-align: center;
-}
+.badge-open  { background:#27AE60; border-radius:999px; padding:2px 10px; font-size:11px; font-weight:900; color:#fff; display:inline-block; }
+.badge-lock  { background:#E74C3C; border-radius:999px; padding:2px 10px; font-size:11px; font-weight:900; color:#fff; display:inline-block; }
+.badge-live  { background:#E74C3C; border-radius:999px; padding:2px 10px; font-size:11px; font-weight:900; color:#fff; display:inline-block; animation: pulse 1.2s infinite; }
+.badge-done  { background:rgba(255,255,255,0.15); border-radius:999px; padding:2px 10px; font-size:11px; font-weight:800; color:rgba(255,255,255,0.5); display:inline-block; }
 
-.score-display {
-    font-size: 2em;
-    font-weight: 900;
-    color: var(--copa-gold);
-    text-align: center;
-    font-family: monospace;
-}
+.score-display { font-family:'Fredoka One',cursive; font-size:26px; color:#FFD700; text-shadow:0 2px 4px rgba(0,0,0,0.5); letter-spacing:2px; }
 
-.rank-1 { color: var(--copa-gold); font-size: 1.4em; font-weight: 900; }
-.rank-2 { color: #C0C0C0; font-size: 1.2em; font-weight: bold; }
-.rank-3 { color: #CD7F32; font-size: 1.1em; font-weight: bold; }
+.result-exact  { color:#7BE0A0; font-weight:900; font-family:'Nunito',sans-serif; font-size:12px; text-align:center; padding:6px 0 2px; }
+.result-winner { color:#A0D8FF; font-weight:900; font-family:'Nunito',sans-serif; font-size:12px; text-align:center; padding:6px 0 2px; }
+.result-wrong  { color:#FF9999; font-weight:900; font-family:'Nunito',sans-serif; font-size:12px; text-align:center; padding:6px 0 2px; }
 
-.badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: bold; margin: 2px; }
-.badge-unlocked { background: linear-gradient(135deg, var(--copa-gold), #FF8C00); color: var(--copa-dark); }
-.badge-locked { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.1); }
+.rank-card { background:linear-gradient(135deg,#1A3A5C,#0D2540); border:3px solid rgba(255,215,0,0.4); border-radius:18px; overflow:hidden; box-shadow:0 4px 0 #07182B,0 6px 12px rgba(0,0,0,0.4); }
 
-.tier-badge { padding: 3px 10px; border-radius: 12px; font-size: 0.8em; font-weight: bold; display: inline-block; }
+.rank-1 { background:linear-gradient(135deg,#FFD700,#FF8C00); color:#5A2D00; }
+.rank-2 { background:linear-gradient(135deg,#C0C0C0,#888); color:#2A2A2A; }
+.rank-3 { background:linear-gradient(135deg,#CD7F32,#8B4513); color:#fff; }
+.rank-n { background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.5); }
+
+.xp-track { background:rgba(0,0,0,0.35); border-radius:999px; height:14px; border:2px solid rgba(255,255,255,0.1); overflow:hidden; }
+.xp-fill  { height:100%; border-radius:999px; background:linear-gradient(90deg,#FFD700,#FF8C00); position:relative; }
+.xp-shine { position:absolute; top:2px; left:6px; right:6px; height:4px; background:rgba(255,255,255,0.4); border-radius:999px; }
+
+.ach-popup { background:linear-gradient(135deg,#234870,#1A3A5C); border:3px solid #FFD700; border-radius:14px; padding:10px 14px; display:flex; align-items:center; gap:12px; box-shadow:0 3px 0 #0A2040; animation:slideInDown 0.4s ease; margin-bottom:14px; }
+.ach-icon  { width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,#FFD700,#FF8C00); display:flex; align-items:center; justify-content:center; font-size:24px; border:2px solid #fff; flex-shrink:0; }
+
+.event-banner { background:linear-gradient(135deg,#9B59B6,#6C3483); border:3px solid #D7BDE2; border-radius:14px; padding:8px 14px; margin-bottom:14px; display:flex; align-items:center; gap:10px; box-shadow:0 3px 0 #4A235A; }
+
+.hud-pill   { background:#1A3A5C; border-radius:999px; padding:4px 14px 4px 8px; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 8px rgba(0,0,0,0.4); }
+.hud-gold   { border:3px solid #FFD700; }
+.hud-red    { border:3px solid #E74C3C; }
+.hud-purple { border:3px solid #9B59B6; }
+
+/* ── Tier badges ── */
+.tier-badge    { padding: 3px 10px; border-radius: 12px; font-size: 0.8em; font-weight: bold; display: inline-block; }
 .tier-bronze   { background: linear-gradient(135deg, #CD7F32, #8B4513); color: white; }
-.tier-prata    { background: linear-gradient(135deg, #C0C0C0, #808080); color: white; }
-.tier-ouro     { background: linear-gradient(135deg, #FFD700, #FF8C00); color: #020F2A; }
-.tier-platina  { background: linear-gradient(135deg, #E5E4E2, #BCC0C4); color: #020F2A; }
-.tier-lenda    { background: linear-gradient(135deg, #FF6B35, #FF2A00); color: white; }
+.tier-silver   { background: linear-gradient(135deg, #C0C0C0, #808080); color: white; }
+.tier-gold     { background: linear-gradient(135deg, #FFD700, #FF8C00); color: #020F2A; }
+.tier-platinum { background: linear-gradient(135deg, #E5E4E2, #BCC0C4); color: #020F2A; }
+.tier-legend   { background: linear-gradient(135deg, #FF6B35, #FF2A00); color: white; }
 
-.activity-item {
-    padding: 8px 12px;
-    border-left: 3px solid var(--copa-gold);
-    margin: 6px 0;
-    background: rgba(255,215,0,0.05);
-    border-radius: 0 8px 8px 0;
-    font-size: 0.9em;
-}
-
+/* ── Invite code ── */
 .invite-code {
     font-family: monospace;
     font-size: 2em;
     font-weight: 900;
-    color: var(--copa-gold);
+    color: #FFD700;
     letter-spacing: 8px;
     text-align: center;
     padding: 10px;
     border: 2px dashed rgba(255,215,0,0.5);
     border-radius: 12px;
 }
-
-.stButton > button {
-    background: linear-gradient(135deg, var(--copa-green), #0D7A4A) !important;
-    color: white !important;
-    border: 2px solid var(--copa-gold) !important;
-    border-radius: 12px !important;
-    font-weight: bold !important;
-    transition: all 0.3s !important;
-}
-
-.stButton > button:hover {
-    box-shadow: 0 0 15px rgba(255,215,0,0.5) !important;
-    transform: translateY(-1px) !important;
-}
-
-.stTextInput input, .stNumberInput input {
-    background: rgba(255,255,255,0.08) !important;
-    border: 1px solid rgba(255,215,0,0.3) !important;
-    color: white !important;
-    border-radius: 8px !important;
-}
-
-h1, h2, h3 { color: var(--copa-gold) !important; }
