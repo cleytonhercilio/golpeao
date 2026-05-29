@@ -165,7 +165,6 @@ _MUSIC_HTML = """<!DOCTYPE html>
 
 def render_music_player():
     import streamlit as st
-    import streamlit.components.v1 as components
 
     with st.sidebar:
         st.markdown(
@@ -173,4 +172,4 @@ def render_music_player():
             "letter-spacing:1px;margin-bottom:4px'>TRILHA SONORA</div>",
             unsafe_allow_html=True,
         )
-        components.html(_MUSIC_HTML, height=48)
+        st.iframe(_MUSIC_HTML, height=48)
