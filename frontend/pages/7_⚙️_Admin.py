@@ -10,7 +10,7 @@ if os.path.exists(_css):
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 if not st.session_state.get("token"):
-    st.switch_page("frontend/0_🔐_Login.py")
+    st.switch_page("0_🔐_Login.py")
 
 user = st.session_state.user or {}
 if not user.get("is_admin"):

@@ -10,7 +10,7 @@ if os.path.exists(_css):
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 if not st.session_state.get("token"):
-    st.switch_page("frontend/0_🔐_Login.py")
+    st.switch_page("0_🔐_Login.py")
 
 
 def render_hud_html(user, next_match_countdown: str = "Em breve") -> str:
