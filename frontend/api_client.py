@@ -82,6 +82,11 @@ def create_group(name: str):
     return r.json(), r.status_code
 
 
+def preview_group(invite_code: str):
+    r = requests.get(f"{API_BASE}/groups/preview/{invite_code}", headers=_headers(), timeout=10)
+    return r.json(), r.status_code
+
+
 def join_group(invite_code: str):
     r = requests.post(f"{API_BASE}/groups/join", params={"invite_code": invite_code}, headers=_headers(), timeout=10)
     return r.json(), r.status_code

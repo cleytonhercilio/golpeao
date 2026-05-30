@@ -26,12 +26,37 @@ def _group_to_out(group: BolaoGroup, db: Session) -> GroupOut:
     return out
 
 
+@router.get("/preview/{invite_code}")
+def preview_group(
+    invite_code: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    group = db.query(BolaoGroup).filter(BolaoGroup.invite_code == invite_code.upper()).first()
+    if not group:
+        raise HTTPException(404, "Código de convite inválido")
+    already_member = db.query(GroupMember).filter(
+        GroupMember.group_id == group.id,
+        GroupMember.user_id == current_user.id,
+    ).first()
+    count = db.query(GroupMember).filter(GroupMember.group_id == group.id).count()
+    return {
+        "id": group.id,
+        "name": group.name,
+        "invite_code": group.invite_code,
+        "member_count": count,
+        "already_member": bool(already_member),
+    }
+
+
 @router.post("/", response_model=GroupOut, status_code=201)
 def create_group(
     data: GroupCreate,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
+    if not current_user.is_admin:
+        raise HTTPException(403, "Apenas administradores podem criar bolões")
     group = BolaoGroup(
         name=data.name,
         invite_code=_generate_invite_code(db),

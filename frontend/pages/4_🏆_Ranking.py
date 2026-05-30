@@ -2,7 +2,7 @@ import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 import streamlit as st
-from frontend.api_client import get_my_groups, get_ranking, create_group, join_group
+from frontend.api_client import get_my_groups, get_ranking, create_group, join_group, preview_group
 
 _css = os.path.join(os.path.dirname(os.path.dirname(__file__)), "style.css")
 if os.path.exists(_css):
@@ -16,6 +16,8 @@ if not st.session_state.get("token"):
 st.markdown("<h1>🏆 Ranking & Grupos</h1>", unsafe_allow_html=True)
 
 user = st.session_state.user or {}
+is_admin = user.get("is_admin", False)
+
 if user:
     pts = user.get("total_points", 0)
     tier_map = {
@@ -73,45 +75,114 @@ def render_ranking_html(entries: list) -> str:
     """
 
 
+# ── Inicializar state do fluxo de entrada ──────────────────────────
+for k, v in [("group_preview", None), ("group_code_input", "")]:
+    if k not in st.session_state:
+        st.session_state[k] = v
+
 tab_ranking, tab_groups = st.tabs(["📊 Ranking", "👥 Grupos"])
 
 with tab_groups:
-    col1, col2 = st.columns(2)
-    with col1:
+
+    # ── CRIAR BOLÃO (apenas admin) ─────────────────────────────────
+    if is_admin:
         st.markdown("#### ➕ Criar Bolão")
         with st.form("new_group"):
             name = st.text_input("Nome do bolão")
-            if st.form_submit_button("Criar", use_container_width=True):
+            if st.form_submit_button("Criar Bolão", use_container_width=True):
                 if name.strip():
                     data, code = create_group(name.strip())
                     if code == 201:
-                        st.success(f"✅ Bolão criado!")
-                        st.markdown(f'<div class="invite-code">{data["invite_code"]}</div>', unsafe_allow_html=True)
-                        st.caption("Compartilhe este código!")
+                        st.success("✅ Bolão criado! Compartilhe o código abaixo:")
+                        st.markdown(
+                            f'<div class="invite-code">{data["invite_code"]}</div>',
+                            unsafe_allow_html=True,
+                        )
+                        st.caption("Envie este código para os participantes via WhatsApp.")
                     else:
-                        st.error(f"❌ {data.get('detail', 'Erro')}")
+                        st.error(f"❌ {data.get('detail', 'Erro ao criar bolão')}")
                 else:
-                    st.error("Nome é obrigatório.")
-    with col2:
-        st.markdown("#### 🔗 Entrar em Bolão")
-        with st.form("join_group"):
-            code = st.text_input("Código de convite (6 letras)")
-            if st.form_submit_button("Entrar", use_container_width=True):
-                if code.strip():
-                    data, status = join_group(code.strip().upper())
+                    st.error("Nome do bolão é obrigatório.")
+        st.markdown("---")
+
+    # ── ENTRAR EM BOLÃO (todos os usuários) ────────────────────────
+    st.markdown("#### 🔗 Entrar em um Bolão")
+
+    # Passo 1 — digitar o código
+    if st.session_state.group_preview is None:
+        code_val = st.text_input(
+            "Código de convite (6 caracteres)",
+            value=st.session_state.group_code_input,
+            max_chars=6,
+            placeholder="Ex: ABC123",
+        )
+        if st.button("🔍 Verificar código", use_container_width=True):
+            code_val = code_val.strip().upper()
+            if len(code_val) == 6:
+                data, status = preview_group(code_val)
+                if status == 200:
+                    st.session_state.group_preview = data
+                    st.session_state.group_code_input = code_val
+                    st.rerun()
+                else:
+                    st.error(f"❌ {data.get('detail', 'Código inválido')}")
+            else:
+                st.error("O código deve ter exatamente 6 caracteres.")
+
+    # Passo 2 — confirmação com nome do bolão
+    else:
+        preview = st.session_state.group_preview
+        already = preview.get("already_member", False)
+
+        st.markdown(f"""
+        <div class="ach-popup">
+            <div class="ach-icon">⚽</div>
+            <div>
+                <div style="font-family:'Fredoka One',cursive;font-size:18px;color:#FFD700;">{preview['name']}</div>
+                <div style="font-size:13px;color:rgba(255,255,255,0.7);">👥 {preview['member_count']} participante(s) · Código: <b>{preview['invite_code']}</b></div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        if already:
+            st.info("ℹ️ Você já é membro deste bolão.")
+            if st.button("↩️ Voltar", use_container_width=True):
+                st.session_state.group_preview = None
+                st.session_state.group_code_input = ""
+                st.rerun()
+        else:
+            col_confirm, col_cancel = st.columns(2)
+            with col_confirm:
+                if st.button("✅ Confirmar entrada", use_container_width=True):
+                    data, status = join_group(preview["invite_code"])
                     if status == 200:
-                        st.success(f"✅ Você entrou em **{data['name']}**!")
+                        st.session_state.group_preview = None
+                        st.session_state.group_code_input = ""
+                        st.success(f"🎉 Você entrou em **{data['name']}**!")
                         st.rerun()
                     else:
-                        st.error(f"❌ {data.get('detail', 'Erro')}")
+                        st.error(f"❌ {data.get('detail', 'Erro ao entrar no bolão')}")
+            with col_cancel:
+                if st.button("❌ Cancelar", use_container_width=True):
+                    st.session_state.group_preview = None
+                    st.session_state.group_code_input = ""
+                    st.rerun()
 
+    # ── MEUS BOLÕES ────────────────────────────────────────────────
     st.markdown("---")
     st.markdown("#### 🏅 Meus Bolões")
     groups = get_my_groups()
     if not groups:
-        st.info("Você ainda não participa de nenhum bolão.")
+        st.info("Você ainda não participa de nenhum bolão. Use um código de convite acima!")
     for g in groups:
-        st.markdown(f"**{g['name']}** — Código: `{g['invite_code']}` — 👥 {g.get('member_count', '?')} membros")
+        cols = st.columns([3, 2, 1])
+        with cols[0]:
+            st.markdown(f"**{g['name']}**")
+        with cols[1]:
+            if is_admin:
+                st.markdown(f'<span class="invite-code" style="font-size:1em;letter-spacing:4px;padding:4px 8px;">{g["invite_code"]}</span>', unsafe_allow_html=True)
+        with cols[2]:
+            st.markdown(f"👥 {g.get('member_count', '?')}")
 
 with tab_ranking:
     groups = get_my_groups()
