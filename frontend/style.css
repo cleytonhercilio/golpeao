@@ -268,3 +268,95 @@ button[kind="header"]                   { display: none !important; }
 
 /* Footer "Made with Streamlit" */
 footer { visibility: hidden !important; }
+
+/* ════════════════════════════════════════════
+   RESPONSIVIDADE — TABLET (769px – 1024px)
+   ════════════════════════════════════════════ */
+@media (min-width: 769px) and (max-width: 1024px) {
+    h1 { font-size: 1.8em !important; }
+    h2 { font-size: 1.4em !important; }
+
+    .gp-flag { width: 44px !important; height: 30px !important; }
+
+    [data-testid="stMetricValue"] { font-size: 22px !important; }
+
+    .invite-code { font-size: 1.6em !important; letter-spacing: 5px !important; }
+
+    [data-testid="stNumberInput"] input { font-size: 18px !important; }
+}
+
+/* ════════════════════════════════════════════
+   RESPONSIVIDADE — MOBILE (≤ 768px)
+   ════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    /* Ajusta horizonte: mais céu para o conteúdo caber */
+    .stApp {
+        background: linear-gradient(180deg,
+            #5B9BD5 0%, #87CEEB 72%,
+            #5CC85A 72%, #4AAD48 100%
+        ) !important;
+    }
+
+    [data-testid="stMain"] {
+        background-position: center bottom !important;
+        background-size: 100% 28% !important;
+    }
+
+    /* Prevent horizontal overflow */
+    body, .stApp { overflow-x: hidden !important; }
+
+    /* Títulos */
+    h1 { font-size: 1.5em !important; }
+    h2 { font-size: 1.2em !important; }
+    h3 { font-size: 1em !important; }
+
+    /* Inputs — mínimo 16px para evitar zoom automático no iOS */
+    [data-testid="stTextInput"] input,
+    [data-testid="stNumberInput"] input {
+        font-size: 16px !important;
+    }
+
+    /* Botões */
+    .stButton > button {
+        font-size: 14px !important;
+        padding: 8px 14px !important;
+    }
+
+    /* Tabs */
+    [data-testid="stTabs"] [role="tab"] {
+        font-size: 12px !important;
+        padding: 4px 10px !important;
+        margin: 0 2px !important;
+    }
+
+    /* Métricas */
+    [data-testid="stMetricValue"] { font-size: 18px !important; }
+
+    /* Bandeiras menores */
+    .gp-flag { width: 34px !important; height: 24px !important; }
+
+    /* Placar */
+    .score-display { font-size: 18px !important; letter-spacing: 1px !important; }
+
+    /* Código de convite */
+    .invite-code {
+        font-size: 1.2em !important;
+        letter-spacing: 4px !important;
+    }
+
+    /* HUD pills compactos */
+    .hud-pill {
+        padding: 3px 8px 3px 6px !important;
+        gap: 4px !important;
+    }
+
+    /* Match cards */
+    .match-card { padding: 8px 10px !important; margin-bottom: 8px !important; }
+
+    /* Badges */
+    .badge { font-size: 0.75em !important; padding: 2px 8px !important; }
+
+    /* Achievement popup */
+    .ach-popup { padding: 8px 10px !important; gap: 8px !important; }
+    .ach-icon  { width: 36px !important; height: 36px !important; font-size: 18px !important; }
+}
