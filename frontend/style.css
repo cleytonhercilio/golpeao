@@ -351,6 +351,50 @@ footer { visibility: hidden !important; }
     /* Prevent horizontal overflow */
     body, .stApp { overflow-x: hidden !important; }
 
+    /* ── Hamburguer FAB flutuante ── */
+    [data-testid="stSidebarToggleButton"] {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        position: fixed !important;
+        bottom: 28px !important;
+        right: 20px !important;
+        z-index: 99999 !important;
+        width: 56px !important;
+        height: 56px !important;
+        min-width: 56px !important;
+        border-radius: 50% !important;
+        background: linear-gradient(135deg, #FFD700, #E6A800) !important;
+        box-shadow: 0 4px 0 #A07000, 0 6px 18px rgba(0,0,0,0.5) !important;
+        border: none !important;
+        overflow: visible !important;
+        padding: 0 !important;
+    }
+
+    /* Esconde o ícone interno (pode estar quebrado) */
+    [data-testid="stSidebarToggleButton"] svg,
+    [data-testid="stSidebarToggleButton"] span {
+        opacity: 0 !important;
+        width: 0 !important;
+        height: 0 !important;
+        font-size: 0 !important;
+    }
+
+    /* Sobrepõe o símbolo ☰ */
+    [data-testid="stSidebarToggleButton"]::after {
+        content: '☰' !important;
+        font-size: 26px !important;
+        color: #3A1A00 !important;
+        font-family: sans-serif !important;
+        position: absolute !important;
+        line-height: 1 !important;
+    }
+
+    /* Espaço extra no fim do conteúdo para o FAB não tapar */
+    [data-testid="stMainBlockContainer"] {
+        padding-bottom: 90px !important;
+    }
+
     /* Títulos */
     h1 { font-size: 1.5em !important; }
     h2 { font-size: 1.2em !important; }
