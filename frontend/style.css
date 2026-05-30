@@ -3,8 +3,8 @@
 /* ── Background principal ── */
 .stApp {
     background: linear-gradient(180deg,
-        #5B9BD5 0%, #87CEEB 35%,
-        #5CC85A 35%, #4AAD48 100%
+        #5B9BD5 0%, #87CEEB 62%,
+        #5CC85A 62%, #4AAD48 100%
     ) !important;
     min-height: 100vh;
 }
