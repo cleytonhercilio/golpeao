@@ -45,7 +45,17 @@ h1, h2, h3 {
     text-shadow: 0 2px 6px rgba(0,0,0,0.5) !important;
 }
 
-p, li, span, label {
+p, li, label {
+    color: rgba(255,255,255,0.9) !important;
+    font-family: 'Nunito', sans-serif !important;
+    font-weight: 700 !important;
+}
+
+/* Nur spans dentro de containers de conteúdo (não ícones Streamlit) */
+[data-testid="stMarkdownContainer"] span,
+[data-testid="stText"] span,
+[data-testid="stCaption"] span,
+.hud-pill span {
     color: rgba(255,255,255,0.9) !important;
     font-family: 'Nunito', sans-serif !important;
     font-weight: 700 !important;
