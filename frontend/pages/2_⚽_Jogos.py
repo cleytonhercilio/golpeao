@@ -2,6 +2,7 @@ import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 import streamlit as st
+from frontend.components.nav import render_bottom_nav
 from frontend.api_client import get_matches
 
 _css = os.path.join(os.path.dirname(os.path.dirname(__file__)), "style.css")
@@ -87,3 +88,5 @@ else:
             </div>
         </div>
         """, unsafe_allow_html=True)
+
+render_bottom_nav()

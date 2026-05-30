@@ -2,6 +2,7 @@ import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 import streamlit as st
+from frontend.components.nav import render_bottom_nav
 from frontend.api_client import get_matches, set_match_result, get_pending_results
 
 _css = os.path.join(os.path.dirname(os.path.dirname(__file__)), "style.css")
@@ -54,3 +55,5 @@ else:
                     st.rerun()
                 else:
                     st.error(f"❌ {data.get('detail', 'Erro ao registrar')}")
+
+render_bottom_nav()

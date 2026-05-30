@@ -2,6 +2,7 @@ import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 import streamlit as st
+from frontend.components.nav import render_bottom_nav
 from frontend.api_client import get_my_groups, get_ranking, create_group, join_group, preview_group
 
 _css = os.path.join(os.path.dirname(os.path.dirname(__file__)), "style.css")
@@ -216,3 +217,5 @@ with tab_ranking:
         st.info("Nenhum palpite registrado ainda.")
     else:
         render_ranking(ranking["entries"])
+
+render_bottom_nav()

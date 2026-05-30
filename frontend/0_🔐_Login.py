@@ -5,6 +5,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import streamlit as st
 from frontend.api_client import login, register, me
 from frontend.components.music_player import render_music_player
+from frontend.components.nav import render_bottom_nav
 
 st.set_page_config(
     page_title="GolPeão ⚽",
@@ -135,3 +136,5 @@ else:
     st.markdown("- 🎯 **Meus Palpites** — Registre e edite palpites")
     st.markdown("- 🏆 **Ranking** — Classificação e grupos")
     st.markdown("- 🏅 **Conquistas** — Seus badges")
+
+render_bottom_nav()

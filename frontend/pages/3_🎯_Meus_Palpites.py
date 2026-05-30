@@ -2,6 +2,7 @@ import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 import streamlit as st
+from frontend.components.nav import render_bottom_nav
 from frontend.api_client import get_my_groups, get_matches, get_predictions, create_prediction, update_prediction
 
 _css = os.path.join(os.path.dirname(os.path.dirname(__file__)), "style.css")
@@ -116,3 +117,5 @@ for m in matches:
                         st.rerun()
                     else:
                         st.error(f"❌ {resp.get('detail', 'Erro')}")
+
+render_bottom_nav()

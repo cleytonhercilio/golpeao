@@ -2,6 +2,7 @@ import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 import streamlit as st
+from frontend.components.nav import render_bottom_nav
 from frontend.api_client import get_my_groups
 
 _css = os.path.join(os.path.dirname(os.path.dirname(__file__)), "style.css")
@@ -84,3 +85,5 @@ for i, ach in enumerate(ALL_ACHIEVEMENTS):
             {"<div style='font-size:0.72em;color:#FFD700;margin-top:4px'>" + bonus_text + "</div>" if bonus_text else ""}
         </div>
         """, unsafe_allow_html=True)
+
+render_bottom_nav()
