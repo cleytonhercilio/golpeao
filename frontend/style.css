@@ -97,12 +97,17 @@ p, li, label {
     box-shadow: 0 1px 0 #A07000 !important;
 }
 
+/* ── Força tema escuro — impede Samsung Internet/Chrome de inverter cores ── */
+:root { color-scheme: dark !important; }
+
 /* ── Inputs de número (placar) ── */
 [data-testid="stNumberInput"] input {
-    background: rgba(255,255,255,0.1) !important;
+    background: #16304D !important;
+    background-color: #16304D !important;
     border: 2px solid #FFD700 !important;
     border-radius: 8px !important;
     color: #FFD700 !important;
+    -webkit-text-fill-color: #FFD700 !important;
     font-size: 20px !important;
     font-family: 'Fredoka One', cursive !important;
     text-align: center !important;
@@ -110,10 +115,12 @@ p, li, label {
 
 /* ── Inputs de texto ── */
 [data-testid="stTextInput"] input {
-    background: rgba(255,255,255,0.1) !important;
+    background: #16304D !important;
+    background-color: #16304D !important;
     border: 2px solid rgba(255,215,0,0.4) !important;
     border-radius: 12px !important;
     color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
     font-family: 'Nunito', sans-serif !important;
     font-weight: 800 !important;
 }
@@ -121,6 +128,31 @@ p, li, label {
 [data-testid="stTextInput"] input:focus {
     border-color: #FFD700 !important;
     box-shadow: 0 0 0 2px rgba(255,215,0,0.3) !important;
+}
+
+/* Placeholder visível em qualquer navegador */
+[data-testid="stTextInput"] input::placeholder {
+    color: rgba(255,255,255,0.5) !important;
+    -webkit-text-fill-color: rgba(255,255,255,0.5) !important;
+    opacity: 1 !important;
+}
+
+/* Autofill do Chrome/Samsung — força fundo escuro e texto claro */
+[data-testid="stTextInput"] input:-webkit-autofill,
+[data-testid="stTextInput"] input:-webkit-autofill:hover,
+[data-testid="stTextInput"] input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #fff !important;
+    -webkit-box-shadow: 0 0 0 1000px #16304D inset !important;
+    box-shadow: 0 0 0 1000px #16304D inset !important;
+    caret-color: #fff !important;
+}
+
+/* Wrapper BaseWeb dos inputs (Streamlit usa div interno com bg próprio) */
+[data-testid="stTextInput"] > div > div,
+[data-baseweb="input"],
+[data-baseweb="base-input"] {
+    background: #16304D !important;
+    background-color: #16304D !important;
 }
 
 /* ── Selectbox ── */
