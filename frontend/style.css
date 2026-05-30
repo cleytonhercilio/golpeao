@@ -1,11 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&display=swap');
 
-/* ── Background principal ── */
+/* ── Background principal (gradiente cobre tudo incluindo sidebar) ── */
 .stApp {
+    background: linear-gradient(180deg,
+        #5B9BD5 0%, #87CEEB 62%,
+        #5CC85A 62%, #4AAD48 100%
+    ) !important;
+    min-height: 100vh;
+}
+
+/* ── Marcações do campo aplicadas só na área principal (sem sidebar) ── */
+[data-testid="stMain"] {
     background:
         url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1800 400'><rect x='0' y='0' width='90' height='400' fill='%23000' opacity='.06'/><rect x='180' y='0' width='90' height='400' fill='%23000' opacity='.06'/><rect x='360' y='0' width='90' height='400' fill='%23000' opacity='.06'/><rect x='540' y='0' width='90' height='400' fill='%23000' opacity='.06'/><rect x='720' y='0' width='90' height='400' fill='%23000' opacity='.06'/><rect x='900' y='0' width='90' height='400' fill='%23000' opacity='.06'/><rect x='1080' y='0' width='90' height='400' fill='%23000' opacity='.06'/><rect x='1260' y='0' width='90' height='400' fill='%23000' opacity='.06'/><rect x='1440' y='0' width='90' height='400' fill='%23000' opacity='.06'/><rect x='1620' y='0' width='90' height='400' fill='%23000' opacity='.06'/><rect x='180' y='40' width='1440' height='320' fill='none' stroke='%23fff' stroke-width='3' opacity='.65'/><line x1='900' y1='40' x2='900' y2='360' stroke='%23fff' stroke-width='3' opacity='.65'/><circle cx='900' cy='200' r='100' fill='none' stroke='%23fff' stroke-width='3' opacity='.65'/><circle cx='900' cy='200' r='5' fill='%23fff' opacity='.75'/><rect x='180' y='120' width='170' height='160' fill='none' stroke='%23fff' stroke-width='2.5' opacity='.6'/><rect x='180' y='157' width='56' height='86' fill='none' stroke='%23fff' stroke-width='2.5' opacity='.6'/><circle cx='293' cy='200' r='4' fill='%23fff' opacity='.7'/><path d='M350 156 A72 72 0 0 1 350 244' fill='none' stroke='%23fff' stroke-width='2.5' opacity='.6'/><rect x='1450' y='120' width='170' height='160' fill='none' stroke='%23fff' stroke-width='2.5' opacity='.6'/><rect x='1564' y='157' width='56' height='86' fill='none' stroke='%23fff' stroke-width='2.5' opacity='.6'/><circle cx='1507' cy='200' r='4' fill='%23fff' opacity='.7'/><path d='M1450 156 A72 72 0 0 0 1450 244' fill='none' stroke='%23fff' stroke-width='2.5' opacity='.6'/><path d='M180 60 A20 20 0 0 1 200 40' fill='none' stroke='%23fff' stroke-width='2' opacity='.55'/><path d='M1600 40 A20 20 0 0 0 1620 60' fill='none' stroke='%23fff' stroke-width='2' opacity='.55'/><path d='M180 340 A20 20 0 0 1 200 360' fill='none' stroke='%23fff' stroke-width='2' opacity='.55'/><path d='M1620 340 A20 20 0 0 0 1600 360' fill='none' stroke='%23fff' stroke-width='2' opacity='.55'/></svg>")
-        center bottom / 100% 38% no-repeat,
-        linear-gradient(180deg, #5B9BD5 0%, #87CEEB 62%, #5CC85A 62%, #4AAD48 100%) !important;
+        center bottom / 100% 38% no-repeat transparent !important;
     min-height: 100vh;
 }
 
