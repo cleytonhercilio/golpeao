@@ -21,56 +21,88 @@ _NAV_CSS = """
 @media (max-width: 768px) {
     .gp-bottom-nav { display: flex !important; }
     [data-testid="stMainBlockContainer"] { padding-bottom: 80px !important; }
-    /* Remove FAB - agora temos bottom nav */
     [data-testid="stSidebarToggleButton"] { display: none !important; }
 }
-.gp-bottom-nav a {
+.gp-bottom-nav button {
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-decoration: none !important;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
     color: rgba(255,255,255,0.55) !important;
     font-size: 9px !important;
     font-family: 'Nunito', sans-serif !important;
     font-weight: 800 !important;
     gap: 1px;
-    padding: 6px 10px;
-    border-radius: 12px;
-    transition: all 0.18s;
+    padding: 6px 10px !important;
+    border-radius: 12px !important;
+    cursor: pointer;
+    width: auto !important;
     min-width: 48px;
+    transition: all 0.18s;
     -webkit-tap-highlight-color: transparent;
 }
-.gp-bottom-nav a:hover {
+.gp-bottom-nav button:hover,
+.gp-bottom-nav button:active {
     color: #FFD700 !important;
     background: rgba(255,215,0,0.12) !important;
+    transform: none !important;
 }
-.gp-bottom-nav .nav-icon { font-size: 22px; line-height: 1.1; }
+.gp-bottom-nav .nav-icon { font-size: 22px; line-height: 1.1; display:block; }
+.gp-bottom-nav .nav-label { font-size: 9px; display:block; }
 </style>
 """
 
+# Uses sidebar link click simulation to preserve Streamlit session state
 _NAV_HTML = """
 <nav class="gp-bottom-nav">
-    <a href="/Inicio">
+    <button onclick="gpNav('Inicio')">
         <span class="nav-icon">🏠</span>
-        <span>Início</span>
-    </a>
-    <a href="/Jogos">
+        <span class="nav-label">Início</span>
+    </button>
+    <button onclick="gpNav('Jogos')">
         <span class="nav-icon">⚽</span>
-        <span>Jogos</span>
-    </a>
-    <a href="/Meus_Palpites">
+        <span class="nav-label">Jogos</span>
+    </button>
+    <button onclick="gpNav('Meus_Palpites')">
         <span class="nav-icon">🎯</span>
-        <span>Palpites</span>
-    </a>
-    <a href="/Ranking">
+        <span class="nav-label">Palpites</span>
+    </button>
+    <button onclick="gpNav('Ranking')">
         <span class="nav-icon">🏆</span>
-        <span>Ranking</span>
-    </a>
-    <a href="/Conquistas">
+        <span class="nav-label">Ranking</span>
+    </button>
+    <button onclick="gpNav('Conquistas')">
         <span class="nav-icon">🏅</span>
-        <span>Badges</span>
-    </a>
+        <span class="nav-label">Badges</span>
+    </button>
 </nav>
+
+<script>
+function gpNav(pageName) {
+    // Simulate click on the sidebar nav link — preserves Streamlit WebSocket session
+    const links = document.querySelectorAll(
+        '[data-testid="stSidebarNav"] a, [data-testid="stSidebarNavItems"] a'
+    );
+    const target = pageName.toLowerCase().replace(/_/g, ' ');
+
+    for (const link of links) {
+        const href = (link.getAttribute('href') || '').toLowerCase();
+        const text = (link.textContent || '').toLowerCase().trim();
+        if (href.includes(pageName.toLowerCase()) || text.includes(target)) {
+            link.click();
+            return;
+        }
+    }
+
+    // Fallback: use history.pushState so the browser doesn't do a hard reload
+    // This still uses Streamlit's frontend router
+    const path = '/' + pageName;
+    window.history.pushState({}, '', path);
+    window.dispatchEvent(new PopStateEvent('popstate', { state: {} }));
+}
+</script>
 """
 
 
