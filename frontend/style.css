@@ -253,18 +253,42 @@ p, li, span, label {
     border-radius: 12px;
 }
 
-/* ── Ocultar elementos quebrados do Streamlit (ícones Material não carregam) ── */
-/* Sidebar toggle / collapse button (keyboard_double_ broken icon) */
-[data-testid="collapsedControl"]        { display: none !important; }
-[data-testid="stSidebarToggleButton"]   { display: none !important; }
-[data-testid="stBaseButton-headerNoPadding"] { display: none !important; }
-button[kind="header"]                   { display: none !important; }
+/* ── Ocultar / corrigir elementos quebrados (Material Icons não carregam) ── */
 
-/* Three-dot header menu (contrast_mode / dark_mode broken icons) */
+/* Sidebar toggle em qualquer estado */
+[data-testid="collapsedControl"],
+[data-testid="stSidebarToggleButton"],
+[data-testid="stSidebarCollapseButton"],
+[data-testid="stBaseButton-headerNoPadding"],
+button[kind="header"] { display: none !important; }
+
+/* Header / toolbar / three-dot menu */
 #MainMenu                    { visibility: hidden !important; height: 0 !important; }
 [data-testid="stToolbar"]    { visibility: hidden !important; height: 0 !important; }
 [data-testid="stHeader"]     { visibility: hidden !important; height: 0 !important; }
 [data-testid="stDecoration"] { display: none !important; }
+[data-testid="stStatusWidget"] { display: none !important; }
+
+/* Breadcrumbs / page navigation adicionados pelo Streamlit 1.36+ */
+[data-testid="stPageNavigation"],
+[data-testid="stBreadcrumbs"],
+[data-testid="stPageLink"],
+[data-testid="stNavLink"],
+[data-testid="stTopNavigation"] { display: none !important; }
+
+/* Ícone arrow_drop_down do st.expander quebrando como texto */
+[data-testid="stExpanderToggleIcon"] { display: none !important; }
+
+/* Catch-all: qualquer span Material Icons renderizando como texto */
+.material-icons,
+.material-icons-sharp,
+.material-icons-outlined,
+.material-icons-round {
+    font-size: 0 !important;
+    min-width: 20px;
+    display: inline-block !important;
+    overflow: hidden !important;
+}
 
 /* Footer "Made with Streamlit" */
 footer { visibility: hidden !important; }
