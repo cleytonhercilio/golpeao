@@ -23,72 +23,49 @@ _NAV_CSS = """
     [data-testid="stMainBlockContainer"] { padding-bottom: 80px !important; }
     [data-testid="stSidebarToggleButton"] { display: none !important; }
 }
-.gp-bottom-nav button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: none !important;
-    border: none !important;
-    box-shadow: none !important;
+.gp-nav-link {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-decoration: none !important;
     color: rgba(255,255,255,0.6) !important;
     font-size: 9px !important;
     font-family: 'Nunito', sans-serif !important;
     font-weight: 800 !important;
-    gap: 1px;
+    gap: 1px !important;
     padding: 6px 10px !important;
     border-radius: 12px !important;
-    cursor: pointer;
-    width: auto !important;
-    min-width: 48px;
-    transition: background 0.15s;
-    -webkit-tap-highlight-color: transparent;
-    transform: none !important;
+    min-width: 48px !important;
+    -webkit-tap-highlight-color: transparent !important;
+    transition: background 0.12s, color 0.12s !important;
 }
-.gp-bottom-nav button:active {
+.gp-nav-link:active {
     background: rgba(255,215,0,0.18) !important;
     color: #FFD700 !important;
-    transform: none !important;
 }
 .gp-nav-icon  { font-size: 22px; line-height: 1.1; display: block; }
-.gp-nav-label { font-size: 9px;  display: block; }
+.gp-nav-label { font-size: 9px; display: block; }
 </style>
 """
 
+_PAGES = [
+    ("Inicio",        "🏠", "Início"),
+    ("Jogos",         "⚽", "Jogos"),
+    ("Meus_Palpites", "🎯", "Palpites"),
+    ("Ranking",       "🏆", "Ranking"),
+    ("Conquistas",    "🏅", "Badges"),
+]
+
 
 def _nav_html(token: str) -> str:
-    # Each button: saves token to localStorage then navigates via window.location.href
-    # Python restores the session from the ?_st= query param on the target page
-    pages = [
-        ("Inicio",        "🏠", "Início"),
-        ("Jogos",         "⚽", "Jogos"),
-        ("Meus_Palpites", "🎯", "Palpites"),
-        ("Ranking",       "🏆", "Ranking"),
-        ("Conquistas",    "🏅", "Badges"),
-    ]
-    buttons = "\n".join(
-        f"""    <button onclick="gpNav('{name}')">
-        <span class="gp-nav-icon">{icon}</span>
-        <span class="gp-nav-label">{label}</span>
-    </button>"""
-        for name, icon, label in pages
+    links = "\n".join(
+        f'<a href="/{name}?_st={token}" class="gp-nav-link">'
+        f'<span class="gp-nav-icon">{icon}</span>'
+        f'<span class="gp-nav-label">{label}</span>'
+        f'</a>'
+        for name, icon, label in _PAGES
     )
-
-    return f"""
-<script>
-// Persist token in localStorage so mobile navigation can restore session
-localStorage.setItem('gp_tk', '{token}');
-
-function gpNav(pageName) {{
-    var tk = localStorage.getItem('gp_tk') || '';
-    var path = '/' + pageName;
-    window.location.href = tk ? path + '?_st=' + encodeURIComponent(tk) : path;
-}}
-</script>
-
-<nav class="gp-bottom-nav">
-{buttons}
-</nav>
-"""
+    return f'<nav class="gp-bottom-nav">\n{links}\n</nav>'
 
 
 def render_bottom_nav():
