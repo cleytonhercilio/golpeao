@@ -87,6 +87,7 @@ def _render_sidebar():
             st.session_state.token = None
             st.session_state.user = None
             st.session_state.active_group = None
+            st.markdown("<script>localStorage.removeItem('gp_tk');</script>", unsafe_allow_html=True)
             st.rerun()
 
 

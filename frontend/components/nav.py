@@ -30,7 +30,7 @@ _NAV_CSS = """
     background: none !important;
     border: none !important;
     box-shadow: none !important;
-    color: rgba(255,255,255,0.55) !important;
+    color: rgba(255,255,255,0.6) !important;
     font-size: 9px !important;
     font-family: 'Nunito', sans-serif !important;
     font-weight: 800 !important;
@@ -40,73 +40,58 @@ _NAV_CSS = """
     cursor: pointer;
     width: auto !important;
     min-width: 48px;
-    transition: all 0.18s;
+    transition: background 0.15s;
     -webkit-tap-highlight-color: transparent;
-}
-.gp-bottom-nav button:hover,
-.gp-bottom-nav button:active {
-    color: #FFD700 !important;
-    background: rgba(255,215,0,0.12) !important;
     transform: none !important;
 }
-.gp-bottom-nav .nav-icon { font-size: 22px; line-height: 1.1; display:block; }
-.gp-bottom-nav .nav-label { font-size: 9px; display:block; }
+.gp-bottom-nav button:active {
+    background: rgba(255,215,0,0.18) !important;
+    color: #FFD700 !important;
+    transform: none !important;
+}
+.gp-nav-icon  { font-size: 22px; line-height: 1.1; display: block; }
+.gp-nav-label { font-size: 9px;  display: block; }
 </style>
 """
 
-# Uses sidebar link click simulation to preserve Streamlit session state
-_NAV_HTML = """
-<nav class="gp-bottom-nav">
-    <button onclick="gpNav('Inicio')">
-        <span class="nav-icon">🏠</span>
-        <span class="nav-label">Início</span>
-    </button>
-    <button onclick="gpNav('Jogos')">
-        <span class="nav-icon">⚽</span>
-        <span class="nav-label">Jogos</span>
-    </button>
-    <button onclick="gpNav('Meus_Palpites')">
-        <span class="nav-icon">🎯</span>
-        <span class="nav-label">Palpites</span>
-    </button>
-    <button onclick="gpNav('Ranking')">
-        <span class="nav-icon">🏆</span>
-        <span class="nav-label">Ranking</span>
-    </button>
-    <button onclick="gpNav('Conquistas')">
-        <span class="nav-icon">🏅</span>
-        <span class="nav-label">Badges</span>
-    </button>
-</nav>
 
+def _nav_html(token: str) -> str:
+    # Each button: saves token to localStorage then navigates via window.location.href
+    # Python restores the session from the ?_st= query param on the target page
+    pages = [
+        ("Inicio",        "🏠", "Início"),
+        ("Jogos",         "⚽", "Jogos"),
+        ("Meus_Palpites", "🎯", "Palpites"),
+        ("Ranking",       "🏆", "Ranking"),
+        ("Conquistas",    "🏅", "Badges"),
+    ]
+    buttons = "\n".join(
+        f"""    <button onclick="gpNav('{name}')">
+        <span class="gp-nav-icon">{icon}</span>
+        <span class="gp-nav-label">{label}</span>
+    </button>"""
+        for name, icon, label in pages
+    )
+
+    return f"""
 <script>
-function gpNav(pageName) {
-    // Simulate click on the sidebar nav link — preserves Streamlit WebSocket session
-    const links = document.querySelectorAll(
-        '[data-testid="stSidebarNav"] a, [data-testid="stSidebarNavItems"] a'
-    );
-    const target = pageName.toLowerCase().replace(/_/g, ' ');
+// Persist token in localStorage so mobile navigation can restore session
+localStorage.setItem('gp_tk', '{token}');
 
-    for (const link of links) {
-        const href = (link.getAttribute('href') || '').toLowerCase();
-        const text = (link.textContent || '').toLowerCase().trim();
-        if (href.includes(pageName.toLowerCase()) || text.includes(target)) {
-            link.click();
-            return;
-        }
-    }
-
-    // Fallback: use history.pushState so the browser doesn't do a hard reload
-    // This still uses Streamlit's frontend router
-    const path = '/' + pageName;
-    window.history.pushState({}, '', path);
-    window.dispatchEvent(new PopStateEvent('popstate', { state: {} }));
-}
+function gpNav(pageName) {{
+    var tk = localStorage.getItem('gp_tk') || '';
+    var path = '/' + pageName;
+    window.location.href = tk ? path + '?_st=' + encodeURIComponent(tk) : path;
+}}
 </script>
+
+<nav class="gp-bottom-nav">
+{buttons}
+</nav>
 """
 
 
 def render_bottom_nav():
     if not st.session_state.get("token"):
         return
-    st.markdown(_NAV_CSS + _NAV_HTML, unsafe_allow_html=True)
+    st.markdown(_NAV_CSS + _nav_html(st.session_state.token), unsafe_allow_html=True)
