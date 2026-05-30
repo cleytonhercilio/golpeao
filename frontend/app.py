@@ -11,6 +11,7 @@ st.set_page_config(
     page_icon="⚽",
     layout="wide",
     initial_sidebar_state="expanded",
+    menu_items={},
 )
 
 _css_path = os.path.join(os.path.dirname(__file__), "style.css")

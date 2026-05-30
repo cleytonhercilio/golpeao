@@ -244,3 +244,9 @@ p, li, span, label {
     border: 2px dashed rgba(255,215,0,0.5);
     border-radius: 12px;
 }
+
+/* ── Ocultar elementos quebrados do Streamlit (ícones Material não carregam) ── */
+[data-testid="collapsedControl"] { display: none !important; }
+#MainMenu { visibility: hidden !important; }
+[data-testid="stToolbar"] { visibility: hidden !important; }
+footer { visibility: hidden !important; }
