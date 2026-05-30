@@ -246,7 +246,17 @@ p, li, span, label {
 }
 
 /* ── Ocultar elementos quebrados do Streamlit (ícones Material não carregam) ── */
-[data-testid="collapsedControl"] { display: none !important; }
-#MainMenu { visibility: hidden !important; }
-[data-testid="stToolbar"] { visibility: hidden !important; }
+/* Sidebar toggle / collapse button (keyboard_double_ broken icon) */
+[data-testid="collapsedControl"]        { display: none !important; }
+[data-testid="stSidebarToggleButton"]   { display: none !important; }
+[data-testid="stBaseButton-headerNoPadding"] { display: none !important; }
+button[kind="header"]                   { display: none !important; }
+
+/* Three-dot header menu (contrast_mode / dark_mode broken icons) */
+#MainMenu                    { visibility: hidden !important; height: 0 !important; }
+[data-testid="stToolbar"]    { visibility: hidden !important; height: 0 !important; }
+[data-testid="stHeader"]     { visibility: hidden !important; height: 0 !important; }
+[data-testid="stDecoration"] { display: none !important; }
+
+/* Footer "Made with Streamlit" */
 footer { visibility: hidden !important; }
