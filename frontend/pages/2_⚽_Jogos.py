@@ -10,8 +10,7 @@ if os.path.exists(_css):
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 if not st.session_state.get("token"):
-    st.warning("⚠️ Faça login primeiro.")
-    st.stop()
+    st.switch_page("frontend/0_🔐_Login.py")
 
 st.markdown("<h1>⚽ Jogos</h1>", unsafe_allow_html=True)
 
